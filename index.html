@@ -1,7 +1,72 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <title>This is a demo</title>
+</head>
+
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <!--This is a simple HTML form, see https://www.w3schools.com/html/html_forms.asp for detail tutorials.-->
+    <form method="post"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeJuXVstcEs8ulrF-GkYYiuNzaKDADtKPH8izvYosdUlhoEWA/viewform?usp=sharing"
+        onsubmit="return check_and_submit()">
+        <label>Date Input</label><br>
+        <input type="date" name="entry.1808887737" id="dateinput" /><br>
+        <label>Checkbox 1</label>
+        <input type="checkbox" name="entry.1171205017" value="Option 1" onchange="on_ckbx1_selected()" id="ckbx1" /><br>
+        <label>Checkbox 2</label>
+        <input type="checkbox" name="entry.506851020" value="Option 2" onchange="on_ckbx2_deselected()"
+            id="ckbx2" /><br>
+        <input type="submit" name="submit" /><br>
+    </form>
 </body>
+
 </html>
+<!--Before this is HTML-->
+<!--These two parts can be in the same file, the browser will handle this!-->
+<!--After this is Javascript code!-->
+<script>
+    function check_and_submit() {
+        // Read the date provided by the user in the form.
+        // Note: See the HTML part, one of the input fields of the form has an attribute id="dateinput"
+        let dateinput = new Date(document.getElementById("dateinput").value);
+        let today = new Date();
+        // Clear up Hours, minutes, and seconds because we only need to check the date!
+        dateinput.setUTCHours(0, 0, 0);
+        today.setUTCHours(0, 0, 0);
+        // This is the place we do the check
+        if (dateinput < today) {
+            //If a day before today is used, let's generate a pop-up dialog using `alert`
+            alert("Cannot use a date before today!");
+            // Return false will CANCEL the submission of the form. 
+            return false;
+        } else {
+            // Otherwise we can submit the form. 
+            // Because the following two functions ensure that
+            // correlation between ckbx1 and ckbx2 holds.
+            return true;
+        }
+    }
+
+    function on_ckbx1_selected() {
+        // This function will be envoked when ever the status of ckbx1 changes
+        // So we have to use an IF statement to check if the user is changing it 
+        // from not check to check or the other way around.
+        if (document.getElementById("ckbx1").checked) {
+            // If now ckbx1 is checked(selected), then we set ckbx2 to selected.
+            document.getElementById("ckbx2").checked = true;
+        }
+    }
+
+    function on_ckbx2_deselected() {
+        // This function works similarly to the above one, just in an opposite way.
+        // Using BOTH of these functions, we ensure the logic :
+        // IF ckbx1 is selected ==> ckbx2 is selected. 
+        // Note this is equivalent to the following mathematically, so we have to check 
+        // both ways!
+        // IF ckbx2 is NOT selected ==> ckbx1 is NOT selected.
+        if (document.getElementById("ckbx2").checked == false) {
+            document.getElementById("ckbx1").checked = false;
+        }
+    }
+</script>
